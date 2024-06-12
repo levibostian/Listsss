@@ -1,0 +1,28 @@
+# To run, you must install: https://taskfile.dev/installation/
+
+version: '3'
+
+tasks:
+  xcodegen_clean:
+    internal: true 
+    cmds:
+      - rm -rf *.xcodeproj
+      - rm -rf *.xcworkspace  
+
+  generate_xcode_project:
+    cmds:
+      - task: xcodegen_clean
+      - mint run xcodegen generate --spec project.yml
+  
+  install_git_hooks:
+    cmds:
+      - mint run lefthook install
+  
+  lint: 
+    cmds:
+      - mint run swiftlint lint --strict
+  
+  format: 
+    cmds:
+      - mint run swiftformat . 
+      - mint run swiftlint lint --fix 
